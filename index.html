@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>PERSONAL ASSISTANT</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563eb">
+  <style>
+    :root{--bg:#f7f9fc;--card:#ffffff;--accent:#2563eb;--muted:#6b7280;--radius:14px}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{background:var(--bg);display:flex;align-items:stretch;justify-content:center;padding:18px}
+    .container{width:100%;max-width:720px;background:transparent;display:flex;flex-direction:column;gap:12px}
+    .top{display:flex;align-items:center;gap:12px;padding:10px 12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#eef2ff,#e0f2fe);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700}
+    .title{font-size:18px;font-weight:600}
+    .meta{color:var(--muted);font-size:13px;margin-left:auto}
+    .panel{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+    .history{height:56vh;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:10px}
+    .bubble{max-width:78%;padding:10px 14px;border-radius:12px;box-shadow:0 4px 10px rgba(16,24,40,0.04);}
+    .user{align-self:flex-end;background:linear-gradient(90deg,#dbeafe,#bfdbfe);border-bottom-right-radius:6px}
+    .assistant{align-self:flex-start;background:#f8fafc;border-bottom-left-radius:6px}
+    .controls{display:flex;gap:8px;margin-top:8px}
+    textarea{flex:1;padding:10px;border-radius:10px;border:1px solid #e6eef8;resize:none;font-size:15px}
+    button{background:var(--accent);color:white;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
+    select, .small{padding:8px;border-radius:8px;border:1px solid #eef2f8;background:white}
+    .footer{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+    /* settings modal */
+    .modal{position:fixed;left:0;right:0;top:0;bottom:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45)}
+    .modal.open{display:flex}
+    .modal-card{background:white;border-radius:12px;padding:16px;max-width:420px;width:92%}
+    input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:8px}
+    .ok{background:#10b981}
+    @media (min-width:720px){body{padding:32px} .container{max-width:720px} }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">PA</div>
+      <div>
+        <div class="title">PERSONAL ASSISTANT</div>
+        <div class="meta">Like ChatGPT, but personal</div>
+      </div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <select id="persona" class="small" title="Persona">
+        <option value="default">Default</option>
+        <option value="coach:encouraging">Coach (encouraging)</option>
+      </select>
+      <select id="provider" class="small" title="Provider">
+        <option value="">(default)</option>
+        <option value="openai">OpenAI</option>
+        <option value="anthropic">Anthropic</option>
+        <option value="cohere">Cohere</option>
+      </select>
+      <button id="settingsBtn" style="margin-left:8px;padding:8px 10px;border-radius:8px;border:1px solid #eef2f8;background:white">⚙️</button>
+    </div>
+  </div>
+
+  <div class="panel" style="display:flex;flex-direction:column;gap:8px">
+    <div id="history" class="history"></div>
+    <div class="controls">
+      <textarea id="message" placeholder="Type a message..." rows="2"></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+  <div class="footer">Tip: open settings to set your backend URL. For Android emulator use <code>http://10.0.2.2:8000</code>.</div>
+</div>
+
+<!-- settings modal -->
+<div id="modal" class="modal">
+  <div class="modal-card">
+    <h3>Settings</h3>
+    <label>Backend URL</label>
+    <input id="backendUrl" type="text" placeholder="http://192.168.1.100:8000" />
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      <button id="testBtn" class="small">Test Connection</button>
+      <button id="saveBtn" class="small ok">Save</button>
+    </div>
+    <div id="testResult" style="margin-top:8px;color:#6b7280;font-size:13px"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
